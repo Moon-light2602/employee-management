@@ -6,10 +6,11 @@
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.1" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1" />
-        <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/activity_add.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/activity_add.xml" value="0.144" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/activity_update.xml" value="0.1" />
+        <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/activity_update.xml" value="0.2" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/certificate_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/item_employee.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/item_experience.xml" value="0.2" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/item_fresher.xml" value="0.2" />
         <entry key="..\:/Users/admin/Downloads/EmployeeManagementSystem/app/src/main/res/layout/item_intern.xml" value="0.264" />

@@ -2,11 +2,15 @@ package edu.hanu.employeemanagementsystem.views;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AlertDialogLayout;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,25 +18,26 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.hanu.employeemanagementsystem.EmployeeListener;
 import edu.hanu.employeemanagementsystem.R;
 import edu.hanu.employeemanagementsystem.adapters.EmployeeAdapter;
+import edu.hanu.employeemanagementsystem.database.EmployeeDatabase;
 import edu.hanu.employeemanagementsystem.exception.InvalidBirthdayException;
 import edu.hanu.employeemanagementsystem.exception.InvalidEmailException;
 import edu.hanu.employeemanagementsystem.exception.InvalidEmployeeTypeException;
 import edu.hanu.employeemanagementsystem.exception.InvalidFullNameException;
 import edu.hanu.employeemanagementsystem.exception.InvalidPhoneException;
 import edu.hanu.employeemanagementsystem.models.Employee;
-import edu.hanu.employeemanagementsystem.models.Experience;
-import edu.hanu.employeemanagementsystem.models.Fresher;
-import edu.hanu.employeemanagementsystem.models.Intern;
 
 public class MainActivity extends AppCompatActivity implements EmployeeListener {
     private static int REQUEST_CODE = 6969;
+    private static int UPDATE_REQUEST_CODE = 9999;
+
     private EmployeeAdapter adapter;
     SearchView searchView;
-    public static ArrayList<Employee> employees = new ArrayList<>();
+    private List<Employee> employees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,9 @@ public class MainActivity extends AppCompatActivity implements EmployeeListener 
 
         searchEmployee();
 
-        adapter = new EmployeeAdapter(MainActivity.this, employees, this);
+        adapter = new EmployeeAdapter(MainActivity.this, this);
+        employees = new ArrayList<>();
+        adapter.setData(employees);
 
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleView.setLayoutManager(manager);
@@ -66,20 +73,12 @@ public class MainActivity extends AppCompatActivity implements EmployeeListener 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menu_add){
+        if (item.getItemId() == R.id.menu_add) {
             Intent intent = new Intent(MainActivity.this, AddActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void employeeClick(Employee employee, int index) {
-        Intent intent = new Intent(this, UpdateActivity.class);
-        intent.putExtra("employee", employee);
-        startActivityForResult(intent, REQUEST_CODE);
-    }
-
 
 
     private void searchEmployee() {
@@ -99,18 +98,47 @@ public class MainActivity extends AppCompatActivity implements EmployeeListener 
     }
 
 
-    private void setData(Employee employee){
-        try {
-            employee.setFullName(employee.getFullName());
-            employee.setBirthDay(employee.getBirthDay());
-            employee.setPhone(employee.getPhone());
-            employee.setEmail(employee.getEmail());
-            employee.setEmployeeType(employee.getEmployeeType());
-        } catch (InvalidFullNameException | InvalidBirthdayException | InvalidPhoneException |
-                 InvalidEmailException | InvalidEmployeeTypeException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    @Override
+    public void updateEmployee(Employee employee) {
+        Intent intent = new Intent(this, UpdateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("updateEmployee", employee);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, UPDATE_REQUEST_CODE);
+    }
+
+    @Override
+    public void deleteEmployee(Employee employee) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Employee")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EmployeeDatabase.getInstance(getApplicationContext()).getEmployeeDao().deleteEmployee(employee);
+                        Toast.makeText(MainActivity.this, "Deleted Successfully!!", Toast.LENGTH_SHORT).show();
+                        employees = EmployeeDatabase.getInstance(getApplicationContext()).getEmployeeDao().getListEmployee();
+                        adapter.setData(employees);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == UPDATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            loadData();
+        }
+        else if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            loadData();
         }
     }
 
+    private void loadData() {
+        employees = EmployeeDatabase.getInstance(this).getEmployeeDao().getListEmployee();
+        adapter.setData(employees);
+    }
 
 }
