@@ -22,7 +22,7 @@ import edu.hanu.employeemanagementsystem.models.Employee;
 public class AddActivity extends AppCompatActivity{
     private String name, birthDay, phone, email;
     private EditText edtName, edtBirthDay, edtPhone, edtEmail;
-    private Button btnContinue, btnAdd, btnCancel;
+    private Button btnAdd, btnCancel;
 
     private Employee employee = new Employee();
 

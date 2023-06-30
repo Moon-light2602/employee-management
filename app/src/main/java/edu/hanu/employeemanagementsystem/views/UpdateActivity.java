@@ -62,8 +62,9 @@ public class UpdateActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+
         EmployeeDatabase.getInstance(this).getEmployeeDao().updateEmployee(employee);
-        Toast.makeText(this, "Update employee successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Updated Successfully", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent();
         setResult(Activity.RESULT_OK, intent);
