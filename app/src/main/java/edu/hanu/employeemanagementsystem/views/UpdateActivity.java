@@ -34,7 +34,7 @@ public class UpdateActivity extends AppCompatActivity {
         initView();
 
         employee = (Employee) getIntent().getExtras().get("updateEmployee");
-        setGeneralInformation(employee);
+        setInformation(employee);
 
         btnCancel.setOnClickListener(view -> {
             Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
@@ -82,7 +82,7 @@ public class UpdateActivity extends AppCompatActivity {
         btnUpdate = findViewById(R.id.btnUpdate);
         btnCancel = findViewById(R.id.btnCancel1);
     }
-    private void setGeneralInformation(Employee employee) {
+    private void setInformation(Employee employee) {
         name4.setText(employee.getFullName());
         birthDay4.setText(employee.getBirthDay());
         phone4.setText(employee.getPhone());

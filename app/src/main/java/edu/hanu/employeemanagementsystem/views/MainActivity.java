@@ -81,28 +81,11 @@ public class MainActivity extends AppCompatActivity implements EmployeeListener 
     }
 
 
-    private void searchEmployee() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return true;
-            }
-        });
-    }
-
-
     @Override
     public void updateEmployee(Employee employee) {
         Intent intent = new Intent(this, UpdateActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("updateEmployee", employee);
+        bundle.putSerializable("updateEmployee", employee);
         intent.putExtras(bundle);
         startActivityForResult(intent, UPDATE_REQUEST_CODE);
 
@@ -140,6 +123,22 @@ public class MainActivity extends AppCompatActivity implements EmployeeListener 
     private void loadData() {
         employees = EmployeeDatabase.getInstance(this).getEmployeeDao().getListEmployee();
         adapter.setData(employees);
+    }
+
+    private void searchEmployee() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 
 }
